@@ -99,6 +99,7 @@ class SepaXmlCreator {
 	var $accountName, $accountIban, $accountBic;
 	var $offset = 0, $fixedDate;
 	var $waehrung = "EUR";
+	var $batchMode = false;
 	
 	// Mode = 1 -> Überweisung / Mode = 2 -> Basislastschrift
 	var $mode = 1;
@@ -110,7 +111,11 @@ class SepaXmlCreator {
 	// XML-Errors
 	private $xmlerrors;
 
-	function setDebitorValues($name, $iban, $bic) {
+    function setBatchMode($batchMode) {
+        $this->batchMode = $batchMode;
+    }
+
+    function setDebitorValues($name, $iban, $bic) {
 		trigger_error('Use setAccountValues($name, $iban, $bic) instead', E_USER_DEPRECATED);
 		
 		$this->setAccountValues($name, $iban, $bic);
@@ -212,7 +217,7 @@ class SepaXmlCreator {
 				$paymentInfo->appendChild($dom->createElement('PmtMtd', 'TRF'));
 				break;
 		}
-		$paymentInfo->appendChild($dom->createElement('BtchBookg', 'true'));
+		$paymentInfo->appendChild($dom->createElement('BtchBookg', $this->batchMode));
 		$paymentInfo->appendChild($dom->createElement('NbOfTxs', count($this->buchungssaetze)));
 		$paymentInfo->appendChild($dom->createElement('CtrlSum', number_format($this->getUmsatzsumme(), 2, '.', '')));
 		$paymentInfo->appendChild($tmp1 = $dom->createElement('PmtTpInf'));
