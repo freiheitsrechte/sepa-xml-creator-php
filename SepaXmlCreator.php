@@ -217,7 +217,7 @@ class SepaXmlCreator {
 				$paymentInfo->appendChild($dom->createElement('PmtMtd', 'TRF'));
 				break;
 		}
-		$paymentInfo->appendChild($dom->createElement('BtchBookg', $this->batchMode));
+		$paymentInfo->appendChild($dom->createElement('BtchBookg', $this->batchMode ? 'true' : "false"));
 		$paymentInfo->appendChild($dom->createElement('NbOfTxs', count($this->buchungssaetze)));
 		$paymentInfo->appendChild($dom->createElement('CtrlSum', number_format($this->getUmsatzsumme(), 2, '.', '')));
 		$paymentInfo->appendChild($tmp1 = $dom->createElement('PmtTpInf'));
